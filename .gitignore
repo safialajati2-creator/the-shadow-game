@@ -1,0 +1,29 @@
+# Godot 4 generated cache
+.godot/
+
+# Export/build outputs
+build/
+builds/
+export/
+exports/
+*.exe
+*.app
+*.apk
+*.aab
+*.pck
+
+# Android generated project
+android/
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Local IDE settings
+.vscode/
+.idea/
+
+# Legacy/generated import sidecars
+*.import
