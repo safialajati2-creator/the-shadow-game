@@ -1,108 +1,359 @@
-# The Shadow
+# 🌑 THE SHADOW
 
-> Godot 4 ile geliştirilmiş 2D karanlık-fantezi aksiyon platform oyunu.
+<p align="center">
+  <strong>Godot 4.6 ve GDScript ile geliştirilen 2D karanlık-fantezi aksiyon platform oyunu</strong>
+</p>
 
-[English README](README.md)
+<p align="center">
+  <a href="README.md">English</a>
+</p>
 
-## Proje Hakkında
+<p align="center">
+  <img src="https://img.shields.io/badge/Godot-4.6-478CBF?logo=godot-engine&logoColor=white" alt="Godot 4.6">
+  <img src="https://img.shields.io/badge/GDScript-Oyun%20Sistemleri-478CBF" alt="GDScript">
+  <img src="https://img.shields.io/badge/T%C3%BCr-2D%20Action%20Platformer-black" alt="Tür">
+  <img src="https://img.shields.io/badge/Oyun%20AI-D%C3%BC%C5%9Fman%20%26%20Boss-6f42c1" alt="Game AI">
+  <img src="https://img.shields.io/badge/Durum-Oynanabilir%20Portf%C3%B6y%20S%C3%BCr%C3%BCm%C3%BC-success" alt="Durum">
+</p>
 
-**The Shadow**, hızlı oynanış, keşif, düşman karşılaşmaları, checkpoint sistemi, ilerleme ve boss savaşı üzerine kurulu bir 2D aksiyon-platform oyun projesidir. Proje **Godot 4** ve **GDScript** kullanılarak geliştirildi; geliştirme ve iterasyon sürecinde AI destekli geliştirme araçlarından da yararlanıldı.
+## Oyun Hakkında
 
-Oyun, pixel-art ortamları karanlık-fantezi atmosferiyle birleştirir ve birden fazla oynanış bölgesi içerir. Savaş sisteminde oyuncu can ve enerji yönetimi, yapay zekâ davranışlarına sahip standart düşmanlar ve daha gelişmiş özel davranışlara sahip bir boss karşılaşması bulunur.
+**THE SHADOW**, akıcı hareket, yönlü savaş sistemi, davranış tabanlı düşman yapay zekâsı, özel boss karşılaşması, checkpoint sistemi, kalıcı save/continue mantığı, rune ilerlemesi, ability mağazası, tuzaklar, kullanıcı arayüzü ve farklı pixel-art ortamlarını bir araya getiren sistem odaklı bir 2D action-platformer projesidir.
 
-## Oynanış Görselleri
+Proje **Godot 4.6** ve **GDScript** ile geliştirildi. OpenAI Codex; hata ayıklama, kod iterasyonu, uygulama desteği ve geliştirme sürecini hızlandırmak için AI destekli mühendislik aracı olarak kullanıldı. Gameplay tasarımı, scene yapımı, entegrasyon, test, dengeleme kararları ve proje yönü geliştirme sürecinin parçası olarak yürütüldü.
+
+> **Mevcut geliştirme durumu:** portföy sürümü Godot üzerinde açılıp başarıyla çalıştırılmıştır. Ana oynanış sistemleri çalışmaktadır. Haritalar arası portal/teleport altyapısı mevcut olmakla birlikte bazı map bağlantıları halen geliştirilmektedir.
+
+## 🎮 Oynanış Görselleri
 
 ### Ana Menü
-![The Shadow ana menü](screenshots/main-menu.png)
 
-### Keşif ve Savaş
-![Kale bölgesi](screenshots/castle-gameplay.png)
+<p align="center">
+  <img src="docs/images/main-menu.png" alt="THE SHADOW ana menü" width="900">
+</p>
 
-![Köy bölgesi](screenshots/village-gameplay.png)
+Oyunda **New Game**, **Continue** ve **Quit** seçeneklerini içeren ana menü akışı bulunur. Continue sistemi kayıtlı checkpoint ilerlemesiyle bağlantılıdır.
 
-![Yanan bölge](screenshots/burning-area.png)
+### Dünya ve Bölümler
 
-### Boss Karşılaşması
-![Boss karşılaşması](screenshots/boss-encounter.png)
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/castle-level.png" alt="Kale bölgesi"></td>
+    <td width="50%"><img src="docs/images/village-level.png" alt="Köy bölgesi"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Kale Bölgesi</strong></td>
+    <td align="center"><strong>Köy Bölgesi</strong></td>
+  </tr>
+</table>
 
-Boss, oyuncuyu takip etme, özel saldırılar gerçekleştirme, oyuncuyu geçici olarak dondurma ve oyuncunun çevresindeki savaş alanında teleport/yeniden konumlanma gibi özel davranışlara sahiptir. Normal düşmanlar da oyuncuyu algılayan, takip eden ve savaşa giren yapay zekâ davranışları kullanır.
+<p align="center">
+  <img src="docs/images/burning-area.png" alt="Yanan bölge" width="900">
+  <br><strong>Yanan Bölge</strong>
+</p>
 
-### Oyun Durumları
-![Boss yenildi](screenshots/boss-defeated.png)
+Farklı level'lar kendilerine özgü çevre tasarımı ve atmosfer sunarken; düşman, hazard, checkpoint, UI ve player kontrol sistemleri ortak gameplay altyapısını kullanır.
 
-![Oyuncu ölüm ekranı](screenshots/death-screen.png)
+## ⚔️ Oyuncu Hareketi ve Savaş Sistemi
 
-## Temel Özellikler
+Ana player controller `CharacterBody2D` kullanır ve şu özellikleri içerir:
 
-- 2D aksiyon-platform oynanışı
-- Birden fazla pixel-art ortam ve oyun bölgesi
-- Oyuncu can ve enerji sistemleri
-- Yakın dövüş / aksiyon mekanikleri
-- Algılama, takip ve savaş davranışlarına sahip standart düşman yapay zekâsı
-- Özel saldırı ve hareket davranışlarına sahip boss yapay zekâsı
-- Boss'un oyuncunun çevresinde teleport/yeniden konumlanma mekaniği
-- Boss savaşında oyuncuyu dondurma mekaniği
-- Checkpoint ve yeniden doğma akışı
-- Kayıt ve Continue desteği
-- Deneme/can ve ölüm durumu yönetimi
-- Shop ve yardımcı oynanış sistemleri
-- New Game, Continue ve Quit seçenekli ana menü
-- Boss yenme / oyun başarı durumu
+- Anlık hız yerine acceleration tabanlı yatay hareket
+- Yerde friction ve havada ayrı air-friction davranışı
+- Gravity tabanlı zıplama ve platform mekaniği
+- Yöne göre karakter dönüşü ve animation state yönetimi
+- Normal Dash ve görsel feedback
+- Mağazadan açılan daha hızlı **Special Dash**
+- Special Dash için en fazla **3 charge**, tüketim ve zamanla yeniden dolum
+- Health ve dash durumunu dinamik gösteren HUD
+- Knockback, geçici invincibility, damage ve death state'leri
+- Checkpoint tabanlı respawn
+- Freeze status effect ve süreli recovery
 
-## Düşman ve Boss Yapay Zekâsı
+### Yönlü Combat
 
-Düşman davranışları yalnızca sabit animasyonlardan veya sahneye yerleştirilmiş karakterlerden oluşmaz. Standart düşmanlarda oyuncuya tepki vermek, oyuncuyu takip etmek ve savaş karşılaşmasına katılmak için kullanılan otonom oynanış davranışları bulunur.
+Savaş sistemi `Area2D` ve `CollisionShape2D` tabanlı attack bölgeleriyle çalışır:
 
-Boss karşılaşması bu sistemi daha ileri taşır. Boss oyuncuyu takip edebilir, belirli saldırılar gerçekleştirebilir, oyuncuyu geçici olarak dondurabilir ve savaş alanında oyuncunun çevresinde yeniden konumlanabilir/teleport olabilir. Bu mekanikler boss savaşını standart düşman karşılaşmalarından daha dinamik hale getirir.
+- Ön saldırı
+- Yukarı saldırı
+- Havada aşağı saldırı
+- Karakter yönüne göre değişen hitbox
+- Zaman kontrollü combo pencereleri
+- Attack, combo ve collision state'lerinin ayrı yönetilmesi
+- Damage, knockback ve hit reaction sistemi
 
-## Oyun Akışı
+## 🧠 Davranış Tabanlı Düşman Yapay Zekâsı
 
-Projede **New Game**, **Continue** ve **Quit** seçeneklerini içeren bir ana menü akışı bulunur. Oyuncu oyun sırasında farklı bölgelerde ilerler, düşmanlarla savaşır, checkpoint sistemini kullanır ve sonunda boss karşılaşmasına ulaşır. Oyuncunun yenilmesi ve boss'un yenilmesi için ayrı oyun durumu ekranları bulunmaktadır.
+Düşmanlar yalnızca sabit animasyon oynatan objeler değildir. Projede oyuncuya ve çevreye tepki veren **Game AI / behavior-based AI** mantığı kullanılır. Bu sistem Machine Learning değil, oyun içi karar verme mantığıdır.
 
-## Teknik Özellikler
+Genel karar akışı:
 
-| Alan | Kullanılan Yapı |
+**Oyuncuyu Algıla → Hedefi Takip Et → Yön/Hareket Kararı → Mesafeyi Değerlendir → Saldırı Kararı → Attack Timing → Hasar/Ölüm State'i**
+
+### Standart Enemy
+
+- Player detection ve target tracking
+- Attack range değerlendirmesi
+- Zaman kontrollü attack hit
+- Damage ve knockback
+- Death state ve rune ödülü
+
+### Skeleton
+
+- Patrol benzeri hareket
+- Kenar ve duvar farkındalığı
+- Encounter sırasında oyuncuya yönelme
+- Yakın mesafe zaman kontrollü attack
+- Varsayılan **3 can**
+- Hit reaction ve rune ödülü
+
+### Wizard
+
+- Kenar/duvar farkındalığı
+- Player-facing combat davranışı
+- Birden fazla saldırı animasyonu (`attack` / `attack2`)
+- Attack çeşitliliği
+- Eski gecikmeli saldırıların yanlış zamanda hasar vermesini engelleyen Attack-ID sistemi
+- Varsayılan **5 can**
+- Yapılandırılmış saldırılar **2 damage** verebilir
+- Standart düşmanlardan daha yüksek rune ödülü
+
+### Guard
+
+Guard, Skeleton ve Wizard'dan farklı olarak kendi movement, wait, turn ve navigation davranışlarını yöneten ayrı bir controller kullanır.
+
+## 👑 BLUE — Adaptif Boss Karşılaşması
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/images/boss-intro.png" alt="BLUE boss intro"></td>
+    <td width="50%"><img src="docs/images/boss-encounter.png" alt="BLUE boss savaşı"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Boss Girişi</strong></td>
+    <td align="center"><strong>Boss Savaşı</strong></td>
+  </tr>
+</table>
+
+**BLUE**, standart düşmanlardan daha gelişmiş ayrı bir behavior/state sistemine sahiptir. Tek bir sabit animasyon sırasını tekrarlamak yerine oyuncunun konumu ve mesafesine göre davranışını yeniden değerlendirir.
+
+### Boss AI ve Karar Mekanizması
+
+- Oyuncuyu algılama ve target tracking
+- Sürekli oyuncuya yönelme
+- **Mesafeye göre aksiyon seçimi**
+- Oyuncu uzaktaysa dash/chase ile yaklaşma
+- Combat mesafesinde saldırıya geçme
+- İki randomized attack tipi
+- Saldırılar için ayrı damage değerleri ve zaman kontrollü hit pencereleri
+- Damage, hit-reaction ve death state'leri
+- Boss health UI ile runtime senkronizasyon
+- Varsayılan **15 can**
+
+Boss karar akışı kavramsal olarak:
+
+**Oyuncuyu Takip Et → Mesafeyi Ölç → Chase / Dash / Attack Seç → Aksiyonu Uygula → Oyuncunun Yeni Konumunu Tekrar Değerlendir**
+
+### ❄️ Freeze Mekaniği
+
+BLUE'nun saldırılarından biri oyuncuya **Freeze** status effect uygulayabilir. Player controller geçici olarak frozen state'e girer, özel görsel feedback gösterir ve yapılandırılmış sürenin ardından normale döner. Böylece boss saldırısı yalnızca normal health damage değil, oyuncunun status/state sistemiyle etkileşim kuran bir mechanic oluşturur.
+
+### ⚡ Arena Repositioning / Teleport
+
+BLUE, boss arenası içinde önceden belirlenmiş **teleport noktaları** arasında yeniden konumlanabilir. Oyuncunun mevcut pozisyonu bu konumlandırma mantığında dikkate alınır. Böylece savaş mesafesi değişir ve oyuncu yeni duruma adapte olmak zorunda kalır.
+
+## 💎 Rune Ekonomisi ve Ability Mağazası
+
+Yenilen düşmanlar rune kazandırabilir. `GameManager` rune ekonomisini yönetir ve Rune UI mevcut miktarı gösterir.
+
+Shop sistemi:
+
+- Player proximity detection
+- `E` ile interaction
+- Shop UI açma / kapatma
+- Ayarlanabilir ability fiyatı
+- Yetersiz rune uyarısı
+- Daha önce satın alınmış ability kontrolü
+- `GameManager` üzerinden satın alma doğrulaması
+
+Mevcut satın alınabilir ability **Special Dash**'tir.
+
+## ❤️ HUD ve Oynanış Geri Bildirimi
+
+Runtime UI sistemleri:
+
+- Health / heart göstergesi
+- Health fill UI
+- Special Dash charge göstergesi
+- Rune counter
+- Death Menu
+- Interactive message UI
+- Transition UI
+- Boss intro sunumu
+- Boss adı ve health bar
+
+Bu arayüzler gameplay state'ine göre dinamik olarak güncellenir.
+
+## 💾 Checkpoint, Save ve Continue
+
+Kalıcı ilerleme, Autoload olarak çalışan `SaveManager` ve Godot `ConfigFile` ile yönetilir.
+
+Checkpoint aktive edildiğinde:
+
+- Mevcut scene path
+- Checkpoint world position
+- Geçerli checkpoint bilgisi
+
+saklanır.
+
+Save dosyası:
+
+```text
+user://save_game.cfg
+```
+
+Continue akışı kayıtlı scene'i ve checkpoint pozisyonunu geri yükler. Respawn sırasında player position, health, movement/combat state'leri, freeze state, attack collision ve animation state sıfırlanır.
+
+## 💀 Ölüm ve Retry Akışı
+
+<p align="center">
+  <img src="docs/images/death-screen.png" alt="THE SHADOW ölüm ekranı" width="900">
+</p>
+
+Projede özel death state ve retry akışı bulunur. Kalan deneme sayısı oyuncuya gösterilir ve yeniden oynama veya oyundan çıkma seçenekleri sunulur.
+
+## 🌍 Level, Portal ve İlerleme
+
+Kaynak projede `level_2`, `level_3_new` ve `level_4` gibi birden fazla level scene bulunur.
+
+Portal / transition altyapısı:
+
+- Player proximity detection
+- `E` interaction
+- Portal activation animasyonu
+- Transition ekranı
+- İlerleyen transition text ve animated dots
+- Scene değişmeden önce confirmation state
+- `PackedScene` target ataması
+- `change_scene_to_packed()` ile Godot scene switching
+
+> **Geliştirme notu:** portal/teleport altyapısı uygulanmıştır ancak bazı map-to-map bağlantıları halen final entegrasyon gerektirir.
+
+## 🌅 Çevresel Geçiş
+
+`day_night_controller.gd`, `CanvasModulate` kullanarak oyuncunun level içindeki yatay ilerlemesine göre atmosferi daha açık sabah tonlarından akşam tonlarına doğru interpolate eder.
+
+## ⚠️ Tuzaklar ve Etkileşimli Dünya
+
+Projede yeniden kullanılabilir çeşitli sistemler bulunur:
+
+- Spike damage
+- Kill zone / instant death alanları
+- Saw trap ve level-specific varyasyonlar
+- Fire hazard
+- Moving / vertical platform
+- Environment objeleri ve dekorasyon
+- Sign / player message sistemleri
+- Spawn point ve portal objeleri
+
+## 🕹️ Varsayılan Kontroller
+
+| Aksiyon | Tuş |
 |---|---|
-| Oyun Motoru | Godot 4 |
-| Programlama Dili | GDScript |
-| Tür | 2D Action Platformer |
-| Görsel Yön | Pixel-art / Dark Fantasy |
-| Düşman Sistemleri | Algılama, takip ve savaş davranışları |
-| Boss Sistemleri | Özel AI, takip, saldırı, dondurma ve teleport davranışları |
-| İlerleme | Checkpoint, respawn ve save/continue akışı |
-| Yardımcı Sistemler | Shop ve oyun yöneticileri |
+| Sola Git | Sol Ok |
+| Sağa Git | Sağ Ok |
+| Zıpla | Space |
+| Ön Saldırı | Z |
+| Yukarı Saldırı | Yukarı Ok |
+| Aşağı Saldırı | Aşağı Ok |
+| Dash | C |
+| Special Dash | X |
+| Etkileşim / Portal / Shop | E |
 
-## Proje Yapısı
+## 🧰 Teknolojiler ve Godot Özellikleri
 
-Repository, Godot proje yapılandırmasını ve oynanış scriptlerini içerir. Önemli yardımcı scriptler arasında checkpoint yönetimi, oyun durumu yönetimi ve kayıt sistemi bulunur. Bunlara oyuncu, düşman, boss ve oynanışa özel scriptler eşlik eder.
+| Teknoloji / Özellik | Kullanım |
+|---|---|
+| Godot 4.6 | Oyun motoru |
+| GDScript | Gameplay ve sistem scriptleri |
+| CharacterBody2D | Oyuncu / karakter hareketi |
+| Area2D / CollisionShape2D | Combat, detection, hazard ve trigger |
+| AnimatedSprite2D | Karakter, düşman ve dünya animasyonu |
+| GPUParticles2D | Freeze / gameplay feedback |
+| ConfigFile | Save/checkpoint kalıcılığı |
+| Autoload | Global save-management logic |
+| Tween | UI ve sunum animasyonları |
+| CanvasModulate | Çevresel renk geçişi |
+| PackedScene | Portal / level target referansları |
+
+## 🏗️ Proje Yapısı
+
+Orijinal Godot kaynak paketi yaklaşık **47 GDScript** ve **30 `.tscn` scene** içerir. Player mechanics, enemy AI, boss behavior, checkpoint, save management, UI, progression, hazards, portals ve environment sistemleri farklı script/scene yapılarıyla yönetilir.
 
 ```text
 project.godot
 scripts/
-  checkpoint.gd
-  game_manager.gd
-  save_manager.gd
-area_2d.gd
+├── checkpoint.gd
+├── game_manager.gd
+└── save_manager.gd
 blue.gd
 shop.gd
-screenshots/
+docs/
+└── images/
+    ├── main-menu.png
+    ├── castle-level.png
+    ├── village-level.png
+    ├── burning-area.png
+    ├── boss-intro.png
+    ├── boss-encounter.png
+    └── death-screen.png
 ```
 
-## Projeyi Çalıştırma
+Godot `res://` resource bağlantılarının bozulmaması için kaynak yapı, bağımlı path'lerde mümkün olduğunca korunmuştur.
 
-1. Uyumlu bir **Godot 4.x** sürümü kurun.
-2. Repository'yi klonlayın veya indirin.
+## 🤖 Codex ile AI Destekli Geliştirme
+
+OpenAI Codex şu alanlarda mühendislik asistanı olarak kullanıldı:
+
+- GDScript debugging
+- Gameplay logic iterasyonu
+- Scene/script entegrasyon problemlerini inceleme
+- Sistemleri refactor etme ve geliştirme
+- Deneme ve geliştirme sürecini hızlandırma
+
+Bu kullanım **AI-assisted development** olarak sunulur; otonom oyun üretimi olarak değil. Gameplay kararları, scene construction, integration, tuning, test ve proje yönü geliştirme sürecinin parçasıdır.
+
+## 🚀 Projeyi Çalıştırma
+
+1. **Godot 4.6** veya uyumlu Godot 4.x sürümünü kurun.
+2. Repository'yi clone edin veya indirin.
 3. Godot Project Manager'ı açın.
-4. `project.godot` dosyasının bulunduğu klasörü içe aktarın.
-5. Projeyi açıp Godot editöründen çalıştırın.
+4. `project.godot` dosyasının bulunduğu klasörü import edin.
+5. Godot'un gerekirse assetleri işlemesini bekleyin.
+6. Projeyi editörden çalıştırın.
 
-## Geliştirme Notları
+```bash
+git clone https://github.com/safialajati2-creator/the-shadow-game.git
+cd the-shadow-game
+```
 
-Bu repository; Godot, GDScript, gameplay programlama, state management ve düşman/boss davranış tasarımı konularındaki pratik deneyimi göstermek amacıyla portfolio projesi olarak sunulmaktadır. Kodlama ve geliştirme sürecinde AI destekli geliştirme araçlarından da yararlanılmıştır.
+## ✅ Doğrulama ve Mevcut Durum
 
-## Mevcut Proje Durumu
+Portföy hazırlığı sırasında:
 
-Oyunun temel projesi çalışmakta ve ana oynanış sistemleri uygulanmış durumdadır. Bilinen eksik alanlardan biri, **bazı haritalar arasındaki teleport/geçiş sisteminin** ek entegrasyon gerektirmesidir.
+- Kaynak paket export edilmiş executable yerine Godot source project olarak incelendi
+- `project.godot` ve proje yapısı kontrol edildi
+- Temizlenen paket üzerinde statik `res://` referans kontrolleri yapıldı
+- Temiz portföy kopyası geliştiricinin bilgisayarında Godot'a import edilerek başarıyla çalıştırıldı
+- Map-to-map portal entegrasyonunun tamamlanması aktif geliştirme maddesi olarak bırakıldı
+
+## 🎨 Assetler ve Haklar
+
+Projede game-development assetleri, fontlar, audio, custom/generated artwork ve üçüncü taraf asset paketleri bulunur. İlgili orijinal lisans koşulları geçerliliğini korur. Repository bir **game-development ve software-engineering portföy projesi** olarak sunulmaktadır.
+
+## 🎯 Bu Proje Neyi Gösteriyor?
+
+THE SHADOW; **Godot 4, GDScript, player controller, platformer physics, directional combat, combo logic, collision tabanlı hit sistemleri, behavior-based enemy AI, target tracking, patrol/çevre farkındalığı, adaptif boss logic, mesafeye göre karar verme, chase/dash behavior, arena repositioning, status effects, checkpoint, persistence, UI/HUD, progression economy, ability unlocking, environmental effects, debugging ve AI-assisted development** konularındaki uygulamalı deneyimi gösterir.
 
 ## Geliştirici
 
