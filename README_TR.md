@@ -357,5 +357,6 @@ THE SHADOW; **Godot 4, GDScript, player controller, platformer physics, directio
 
 ## Geliştirici
 
-**Mustafa Alajati**  
 Software Developer · Business Automation · AI-Assisted Development · Godot 4
+
+[GitHub](https://github.com/safialajati2-creator) · [LinkedIn](https://www.linkedin.com/in/mustafa-alajati-8a1aa4286/?isSelfProfile=true) · [Email](mailto:Safialajati2@gmail.com)
